@@ -13,7 +13,7 @@ public class Main extends Application {
 		try {
 			/*Instanciar FXMLLoader para manipular a tela antes de carregar */
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
-			/*Ajustando direcionamento da tela*/
+			/*Ajustando a tela*/
 			ScrollPane scrollPane = loader.load();
 			//setando altura true
 			scrollPane.setFitToHeight(true);
