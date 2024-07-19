@@ -2,8 +2,8 @@ package application;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 
@@ -13,10 +13,15 @@ public class Main extends Application {
 		try {
 			/*Instanciar FXMLLoader para manipular a tela antes de carregar */
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
-			//Chamando o loader.load() paracarregar a view
-			Parent parent = loader.load();
+			/*Ajustando direcionamento da tela*/
+			ScrollPane scrollPane = loader.load();
+			//setando altura true
+			scrollPane.setFitToHeight(true);
+			//setando largura true
+			scrollPane.setFitToWidth(true);
+			
 			//Instanciando a cena passando como argumento principal no caso AnchoPane fazio
-			Scene mainScene = new Scene(parent);
+			Scene mainScene = new Scene(scrollPane);
 			//setando a cena principal
 			primaryStage.setScene(mainScene);
 			//definindo titulo
