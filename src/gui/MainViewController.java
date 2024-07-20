@@ -34,7 +34,7 @@ public class MainViewController implements Initializable{
 	
 	@FXML
 	public void onMenuItemDepartmentAction() {
-		System.out.println("onMenuItemDepartmentAction");
+		loadView("/gui/DepartmentList.fxml");
 	}
 	
 	@FXML
@@ -48,7 +48,7 @@ public class MainViewController implements Initializable{
 	}
 	/*symchronized garante que o metodo não será interrompido pela multthreds
 	 * Esse metodo laodView carrenga uma View*/
-	public synchronized void loadView(String absoluteName) {
+	private synchronized void loadView(String absoluteName) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVbox = loader.load();
@@ -63,7 +63,7 @@ public class MainViewController implements Initializable{
 			//Adicionando o mainMenu
 			mainVBox.getChildren().add(mainMenu);
 			//assAll adiciona uma coleção no caso filhos do newVbox
-			mainVBox.getChildren().addAll(newVbox);
+			mainVBox.getChildren().addAll(newVbox.getChildren());
 			
 		}catch(IOException e) {
 			Alerts.showAlerts("IOException", "Error loading view", e.getMessage(), AlertType.ERROR);
