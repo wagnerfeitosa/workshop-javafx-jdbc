@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
+	//Atributo para ser referenciado
+	private static Scene mainScene;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -21,7 +23,7 @@ public class Main extends Application {
 			scrollPane.setFitToWidth(true);
 			
 			//Instanciando a cena passando como argumento principal no caso AnchoPane fazio
-			Scene mainScene = new Scene(scrollPane);
+			mainScene = new Scene(scrollPane);
 			//setando a cena principal
 			primaryStage.setScene(mainScene);
 			//definindo titulo
@@ -31,6 +33,10 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	//metodo para pegar de forma extena a referencia mainScene
+	public static Scene getMainScene() {
+		return mainScene;
 	}
 	
 	public static void main(String[] args) {
