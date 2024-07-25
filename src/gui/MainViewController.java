@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
@@ -35,12 +36,17 @@ public class MainViewController implements Initializable{
 	
 	@FXML
 	public void onMenuItemDepartmentAction() {
-		loadView2("/gui/DepartmentList.fxml");
+		//Agora a função recebe dois argumentos um fxml e Expressão lambda
+		loadView("/gui/DepartmentList.fxml",(DepartmentListController controller) ->{
+			controller.setDepartmentService(new DepartmentService());
+			controller.updateTableView();
+			
+		});
 	}
 	
 	@FXML
 	public void onMenuItemAboutAction() {
-		loadView("/gui/Aboult.fxml");
+		loadView("/gui/Aboult.fxml",x -> {});
 	}
 
 	@Override
@@ -48,8 +54,10 @@ public class MainViewController implements Initializable{
 		
 	}
 	/*symchronized garante que o metodo não será interrompido pela multthreds
-	 * Esse metodo laodView carrenga uma View*/
-	private synchronized void loadView(String absoluteName) {
+	 * Esse metodo laodView carrenga uma View; Para que não tenha que
+	 * criar um metodo loadView para cada ação Action atribuimos mais um paramento na função
+	 * que recebe um tipo Consumer tipo generico<T>*/
+	private synchronized <T> void loadView(String absoluteName,Consumer<T> initializingAction){
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVbox = loader.load();
@@ -66,10 +74,15 @@ public class MainViewController implements Initializable{
 			//assAll adiciona uma coleção no caso filhos do newVbox
 			mainVBox.getChildren().addAll(newVbox.getChildren());
 			
+			//executando a função passada como parametro
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+			
 		}catch(IOException e) {
 			Alerts.showAlerts("IOException", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
+	/*Foi clonado esse metodo apenas para testar DepartmentService*/
 	private synchronized void loadView2(String absoluteName) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -98,5 +111,6 @@ public class MainViewController implements Initializable{
 			Alerts.showAlerts("IOException", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
+	
 
 }
