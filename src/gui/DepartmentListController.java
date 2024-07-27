@@ -52,7 +52,7 @@ public class DepartmentListController implements Initializable{
 
 	private void initializeNodes() {
 		/*inicializando o comportamento das calunas padrao javaFx
-		 * id e name são atributos da classes*/
+		 * id e name são capturados do get das Classes */
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		
