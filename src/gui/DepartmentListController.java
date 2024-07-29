@@ -1,18 +1,27 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Department;
 import model.servicies.DepartmentService;
@@ -36,8 +45,9 @@ public class DepartmentListController implements Initializable{
 	private Button btNew;
 	
 	@FXML
-	public void onBtNewAction() {
-		System.out.println("onBtNewAction");
+	public void onBtNewAction(ActionEvent event) {
+		Stage parentStage = Utils.currentsStage(event);
+		createDialogForm("/gui/DepartmentForm.fxml", parentStage);
 	}
 	/*injetando a injeção de dependencia*/
 	public void setDepartmentService(DepartmentService service) {
@@ -78,6 +88,33 @@ public class DepartmentListController implements Initializable{
 		//setando ao atributo tableViewDepartmet o obsList
 		tableViewDepartment.setItems(obsList);
 		
+	}
+	/*Metodo para criar uma nova janela para o evento New do FOrmulario Department
+	 * Recebe como argumento um fxml e um Stage no caso o evento do botao*/
+	private void createDialogForm(String absoluteName, Stage parentStage) {
+		
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Enter Department data");
+			dialogStage.setScene(new Scene(pane));
+			//Metodo como false diz que Redirecionamento tela negada
+			dialogStage.setResizable(false);
+			//metodo recebe quem será pai da janela
+			dialogStage.initOwner(parentStage);
+			//metodo de comporamento da janela recebe Modality.WINDOW_MODAL
+			//que travará a tela 
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			//garrega o formulario 
+			dialogStage.showAndWait();
+			
+			
+		}
+		catch(IOException e) {
+			Alerts.showAlerts("IO Exception", "Error loading View ", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 }
