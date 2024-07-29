@@ -89,7 +89,7 @@ public class DepartmentListController implements Initializable{
 		tableViewDepartment.setItems(obsList);
 		
 	}
-	/*Metodo para criar uma nova janela para o evento New do FOrmulario Department
+	/*Metodo para criar uma nova janela para o evento New do Formulario Department
 	 * Recebe como argumento um fxml e um Stage no caso o evento do botao*/
 	private void createDialogForm(String absoluteName, Stage parentStage) {
 		
@@ -104,7 +104,7 @@ public class DepartmentListController implements Initializable{
 			dialogStage.setResizable(false);
 			//metodo recebe quem será pai da janela
 			dialogStage.initOwner(parentStage);
-			//metodo de comporamento da janela recebe Modality.WINDOW_MODAL
+			//metodo de comportamento da janela recebe Modality.WINDOW_MODAL
 			//que travará a tela 
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			//garrega o formulario 
