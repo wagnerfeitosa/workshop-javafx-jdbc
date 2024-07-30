@@ -15,5 +15,16 @@ public class DepartmentService {
 
 		return dao.findAll();
 	}
+	//Responsavel por inserir os dados 
+	public void saveOrUpdate(Department obj) {
+		//verificar se trata de um novo dado ou se é alteração
+		if(obj.getId() == null) {
+			dao.insert(obj);
+		}
+		else {
+			dao.update(obj);
+		}
+		
+	}
 
 }

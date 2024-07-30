@@ -100,6 +100,7 @@ public class DepartmentListController implements Initializable{
 			//pegando o controlador da tela criada
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartment(obj);
+			controller.setDepartmentService(new DepartmentService());
 			controller.updateFormData();
 			
 			
