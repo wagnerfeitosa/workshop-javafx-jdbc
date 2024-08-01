@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -25,8 +26,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Department;
 import model.servicies.DepartmentService;
-
-public class DepartmentListController implements Initializable{
+/*Classe Observer que fica escutando a outra classe*/
+public class DepartmentListController implements Initializable,DataChangeListener{
 	
 	private DepartmentService service;
 	
@@ -97,10 +98,14 @@ public class DepartmentListController implements Initializable{
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+			
 			//pegando o controlador da tela criada
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartment(obj);
 			controller.setDepartmentService(new DepartmentService());
+			//Se escrevendo para receber um evento
+			controller.subscribeDataChangeListener(this);
+			
 			controller.updateFormData();
 			
 			
@@ -122,6 +127,13 @@ public class DepartmentListController implements Initializable{
 		catch(IOException e) {
 			Alerts.showAlerts("IO Exception", "Error loading View ", e.getMessage(), AlertType.ERROR);
 		}
+	}
+	//Resposavel por executar a notificação quando os dados forem alterados
+	@Override
+	public void ondaDataChanged() {
+		updateTableView();
+		
+		
 	}
 
 }

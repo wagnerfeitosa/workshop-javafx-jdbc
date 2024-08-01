@@ -1,9 +1,12 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import db.DbException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -16,12 +19,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Department;
 import model.servicies.DepartmentService;
-
+/*Essa classe é Observer é Subject ou seja a classe que Emite o evento */
 public class DepartmentFormController implements Initializable{
 	
 	private Department entity;
 	
 	private DepartmentService service;
+	//Lista de objetos escritos interessados em receber eventos 
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	@FXML
 	private TextField txtId;
@@ -45,6 +50,10 @@ public class DepartmentFormController implements Initializable{
 	public void setDepartmentService(DepartmentService service) {
 		this.service = service;
 	}
+	//Resposavel em escrever listener na lista
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
 	
 	@FXML
 	public void onBtSaveAction(ActionEvent event) {
@@ -57,6 +66,8 @@ public class DepartmentFormController implements Initializable{
 		try {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
+			//metodo de notificação
+			notifyDataChangeListeners();
 			
 			//Apos salvar os dado fechar a jenela
 			Utils.currentsStage(event).close();;
@@ -66,7 +77,14 @@ public class DepartmentFormController implements Initializable{
 		}
 		
 	}
-	
+	//Responsavel por percorrer a lista e notificando 
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener : dataChangeListeners) {
+			listener.ondaDataChanged();
+			
+		}
+		
+	}
 	/*Resposavel por pegar os dados do digitados no TextField
 	 * e adicionar no objeto Department */
 	private Department getFormData() {
