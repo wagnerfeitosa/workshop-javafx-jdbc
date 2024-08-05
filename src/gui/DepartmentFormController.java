@@ -98,14 +98,14 @@ public class DepartmentFormController implements Initializable{
 		Department obj = new Department();
 		ValidationException exception = new ValidationException("Validation Error");
 		
-		
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
-		
+		  //trim elimina qualque espaco em branco que esteja no inicio ou na final
 		if(txtName.getText() == null || txtName.getText().trim().equals("")) {
+			//adicionando erro
 			exception.addErros("name", "o campo não pode ser vazio");
 		}
 		obj.setName(txtName.getText());
-		
+		//se ouver um erro é lançado a exeption
 		if(exception.getErros().size() > 0) {
 			throw exception;
 		}
@@ -137,7 +137,9 @@ public class DepartmentFormController implements Initializable{
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
 	}
+	//responsavel por pegar os erros da exception e escrever os erros na tela
 	private void setErrorMessages(Map<String,String> erros) {
+		
 		Set<String> fields = erros.keySet();
 		
 		if(fields.contains("name")) {
